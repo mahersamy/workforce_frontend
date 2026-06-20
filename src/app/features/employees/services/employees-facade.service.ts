@@ -27,6 +27,9 @@ export class EmployeesFacadeService {
   readonly filters = this.empState.filters;
   readonly isLoading = this.empState.isLoading;
 
+  readonly selectedEmployeeDetail = this.empState.selectedEmployeeDetail;
+  readonly isDetailLoading = this.empState.isDetailLoading;
+
   // ── Operation state ────────────────────────────────────────────────────
   private readonly _isSubmitting = signal(false);
   private readonly _saveSucceeded = signal(0);
@@ -74,11 +77,24 @@ export class EmployeesFacadeService {
   }
 
   /**
-   * Returns the employee detail — the component still needs to subscribe here
-   * because it populates the form / detail dialog with the response data.
+   * Loads the employee detail and populates it in the state.
+   * This removes the need for the component to subscribe directly.
    */
-  getEmployeeDetails(id: number): Observable<EmployeeDetail> {
-    return this.empApi.getEmployeeById(id);
+  loadEmployeeDetails(id: number): void {
+    this.empState.setDetailLoading(true);
+    this.empApi.getEmployeeById(id)
+      .pipe(
+        finalize(() => this.empState.setDetailLoading(false)),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe({
+        next: (detail) => this.empState.setSelectedEmployeeDetail(detail),
+        error: () => this.empState.setSelectedEmployeeDetail(null)
+      });
+  }
+
+  clearEmployeeDetails(): void {
+    this.empState.setSelectedEmployeeDetail(null);
   }
 
   saveEmployee(

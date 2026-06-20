@@ -71,8 +71,7 @@ export class EmployeeListComponent implements OnInit {
 
   filteredEmployees = computed(() => {
     const filters = this.empFacade.filters();
-    const list = this.employees() || [];
-
+    const list = Array.from(this.employees());
     return list.filter((emp) => {
       // Search: firstName, lastName, email (case insensitive)
       if (filters?.search && filters.search !== '') {
@@ -104,8 +103,8 @@ export class EmployeeListComponent implements OnInit {
   isFormOpen = signal<boolean>(false);
   isDetailOpen = signal<boolean>(false);
   selectedEmployee = signal<Employee | null>(null);
-  employeeDetail = signal<EmployeeDetail | null>(null);
-  isLoadingDetail = signal<boolean>(false);
+  employeeDetail = this.empFacade.selectedEmployeeDetail;
+  isLoadingDetail = this.empFacade.isDetailLoading;
 
   constructor() {
     this.initializeTable();
@@ -188,20 +187,9 @@ export class EmployeeListComponent implements OnInit {
   }
 
   openDetailDialog(id: number): void {
-    this.isLoadingDetail.set(true);
-    this.employeeDetail.set(null);
+    this.empFacade.clearEmployeeDetails();
     this.isDetailOpen.set(true);
-
-    this.empFacade.getEmployeeDetails(id).subscribe({
-      next: (detail) => {
-        this.employeeDetail.set(detail);
-        this.isLoadingDetail.set(false);
-      },
-      error: () => {
-        this.isLoadingDetail.set(false);
-        this.isDetailOpen.set(false);
-      },
-    });
+    this.empFacade.loadEmployeeDetails(id);
   }
 
   closeDetailDialog(): void {
@@ -211,6 +199,6 @@ export class EmployeeListComponent implements OnInit {
   // ── CRUD ──────────────────────────────────────────────────────────────
 
   onDelete(id: number): void {
-      this.empFacade.deleteEmployee(id);
+    this.empFacade.deleteEmployee(id);
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { Employee } from '../models/employee.model';
+import { Employee, EmployeeDetail } from '../models/employee.model';
 import { PagedResult } from '../../../shared/models/paged-result.model';
 import { EmployeeFilters } from '../models/employee-filters.model';
 
@@ -18,6 +18,8 @@ export class EmployeesStateService {
     departmentId: null,
     isActive: null,
   });
+  private readonly _selectedEmployeeDetail = signal<EmployeeDetail | null>(null);
+  private readonly _isDetailLoading = signal<boolean>(false);
 
   readonly employees = this._employees.asReadonly();
   readonly totalCount = this._totalCount.asReadonly();
@@ -26,6 +28,8 @@ export class EmployeesStateService {
   readonly searchTerm = this._searchTerm.asReadonly();
   readonly isLoading = this._isLoading.asReadonly();
   readonly filters = this._filters.asReadonly();
+  readonly selectedEmployeeDetail = this._selectedEmployeeDetail.asReadonly();
+  readonly isDetailLoading = this._isDetailLoading.asReadonly();
 
   setPagedResult(result: PagedResult<Employee>): void {
     this._employees.set(result.data);
@@ -54,5 +58,13 @@ export class EmployeesStateService {
 
   setFilters(filters: EmployeeFilters): void {
     this._filters.set({ ...this._filters(), ...filters });
+  }
+
+  setSelectedEmployeeDetail(detail: EmployeeDetail | null): void {
+    this._selectedEmployeeDetail.set(detail);
+  }
+
+  setDetailLoading(loading: boolean): void {
+    this._isDetailLoading.set(loading);
   }
 }

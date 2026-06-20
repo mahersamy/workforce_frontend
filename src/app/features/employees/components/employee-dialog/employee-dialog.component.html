@@ -52,6 +52,7 @@
           optionLabel="name"
           optionValue="id"
           dataKey="id"
+          appendTo="body"
           class="w-full"
           placeholder="Select department"
           [class.ng-invalid]="
@@ -112,6 +113,7 @@
           formControlName="salary"
           placeholder="Annual salary"
           [min]="5000"
+          [max]="5000"
           [class.ng-invalid]="
             employeeForm.get('salary')?.touched && employeeForm.get('salary')?.invalid
           "

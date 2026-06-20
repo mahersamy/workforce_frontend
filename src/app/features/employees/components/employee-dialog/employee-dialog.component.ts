@@ -41,7 +41,7 @@ export class EmployeeDialogComponent {
 
   departments = this.deptFacade.departments;
   isSubmitting = this.empFacade.isSubmitting;
-  isLoadingDetail = signal<boolean>(false);
+  isLoadingDetail = this.empFacade.isDetailLoading;
 
   employeeForm = this.fb.nonNullable.group({
     firstName: ['', [Validators.required, Validators.minLength(2)]],
@@ -61,30 +61,27 @@ export class EmployeeDialogComponent {
     effect(() => {
       const emp = this.employee();
       if (emp) {
-
-        this.isLoadingDetail.set(true);
-        this.empFacade.getEmployeeDetails(emp.id).subscribe({
-          next: (detail) => {
-            this.isLoadingDetail.set(false);
-            this.employeeForm.patchValue({
-              firstName: detail.firstName,
-              lastName: detail.lastName,
-              email: detail.email,
-              phone: detail.phone || '',
-              hireDate: new Date(detail.hireDate),
-              salary: detail.salary,
-              departmentId: detail.departmentId,
-              isActive: detail.isActive,
-            });
-          },
-          error: () => {
-            this.isLoadingDetail.set(false);
-            this.visible.set(false);
-          },
-        });
+        this.empFacade.loadEmployeeDetails(emp.id);
       } else {
+        this.empFacade.clearEmployeeDetails();
         this.employeeForm.reset();
-        this.isLoadingDetail.set(false);
+      }
+    }, { allowSignalWrites: true });
+
+    // Watch for selected employee detail changes
+    effect(() => {
+      const detail = this.empFacade.selectedEmployeeDetail();
+      if (detail) {
+        this.employeeForm.patchValue({
+          firstName: detail.firstName,
+          lastName: detail.lastName,
+          email: detail.email,
+          phone: detail.phone || '',
+          hireDate: new Date(detail.hireDate),
+          salary: detail.salary,
+          departmentId: detail.departmentId,
+          isActive: detail.isActive,
+        });
       }
     });
 
