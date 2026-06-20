@@ -1,59 +1,93 @@
 # WorkforceManagementFrontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.2.
+The frontend for the Workforce Management Portal, built with [Angular](https://angular.dev) 21 (standalone components, SSR-enabled) and [PrimeNG](https://primeng.org) for UI components.
 
-## Development server
+Key tech: Angular 21, PrimeNG 21 (Aura theme), Chart.js, RxJS, Angular SSR/Express server, Vitest for unit tests.
 
-To start a local development server, run:
+## Prerequisites
+
+- [Node.js](https://nodejs.org/) — version compatible with Angular 21 (Node 20.19+ / 22.12+)
+- npm 9+
+- The backend API running (see the backend `README-Backend.md`) — by default expected at `http://localhost:5012`
+
+## 1. Install dependencies
 
 ```bash
+npm install
+```
+
+## 2. Configure the API URL
+
+Environment files live in `src/environments/`:
+
+- `environment.ts` — development (`apiUrl: 'http://localhost:5012'`)
+- `environment.prod.ts` — production
+- `environment.stage.ts` — staging
+
+Update `apiUrl` to point at wherever your backend is running.
+
+## 3. Run the dev server
+
+```bash
+npm start
+# or
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Navigate to `http://localhost:4200/`. The app reloads automatically on file changes.
 
-## Code scaffolding
+Default seeded login (from the backend seed data): **username:** `admin` · **password:** `Admin123!`
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+## 4. Build
 
 ```bash
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Build artifacts are written to `dist/`. The production build is optimized by default.
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+For SSR, build then run the Node/Express server:
 
 ```bash
+ng build
+node dist/workforce_management_frontend/server/server.mjs
+```
+
+## 5. Run tests
+
+```bash
+npm test
+# or
 ng test
 ```
 
-## Running end-to-end tests
+Uses [Vitest](https://vitest.dev/) as the test runner.
 
-For end-to-end (e2e) testing, run:
+## Project structure (high level)
 
-```bash
-ng e2e
+```
+src/app/
+  core/                 # guards, interceptors, layout shell, constants, services
+  features/
+    auth/                # login / register
+    dashboard/           # overview + charts
+    employees/           # employee CRUD
+    departments/         # department CRUD
+    tasks/               # task assignment & status
+  shared/
+    components/          # data-table, paginator, filter-panel, field-error...
+    directives/           # has-role, loading
+    validation/
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Roles
 
-## Additional Resources
+The app supports three roles surfaced from the backend JWT: `Admin`, `Manager`, `Employee`.
+- Employees & Departments management requires `Admin` or `Manager`.
+- Tasks are visible to everyone; only managers/admins can create tasks, while an employee can update the status of tasks assigned to them.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Troubleshooting
+
+- **Network errors / CORS issues**: confirm the backend's `apiUrl` is reachable and CORS is configured server-side to allow `http://localhost:4200`.
+- **401 errors immediately after login**: check that the JWT secret/issuer/audience match between what the backend issues and validates.
+- **Blank page after `ng build` + SSR**: make sure you're serving via `server.mjs`, not just opening `dist/.../browser/index.html` directly (the app relies on the Express server for SSR routes).
