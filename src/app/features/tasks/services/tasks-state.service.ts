@@ -19,6 +19,8 @@ export class TasksStateService {
     status: null,
     assignedToEmployeeId: null,
   });
+  private readonly _selectedTaskDetail = signal<Task | null>(null);
+  private readonly _isDetailLoading = signal<boolean>(false);
 
   readonly tasks = this._tasks.asReadonly();
   readonly totalCount = this._totalCount.asReadonly();
@@ -27,6 +29,8 @@ export class TasksStateService {
   readonly searchTerm = this._searchTerm.asReadonly();
   readonly isLoading = this._isLoading.asReadonly();
   readonly filters = this._filters.asReadonly();
+  readonly selectedTaskDetail = this._selectedTaskDetail.asReadonly();
+  readonly isDetailLoading = this._isDetailLoading.asReadonly();
 
   setPagedResult(result: PagedResult<Task>): void {
     this._tasks.set(result.data);
@@ -55,5 +59,13 @@ export class TasksStateService {
 
   setFilters(filters: TaskFilters): void {
     this._filters.set({ ...this._filters(), ...filters });
+  }
+
+  setSelectedTaskDetail(detail: Task | null): void {
+    this._selectedTaskDetail.set(detail);
+  }
+
+  setDetailLoading(loading: boolean): void {
+    this._isDetailLoading.set(loading);
   }
 }

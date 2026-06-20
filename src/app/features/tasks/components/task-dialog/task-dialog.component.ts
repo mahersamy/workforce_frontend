@@ -40,16 +40,15 @@ import { EmployeesFacadeService } from '../../../employees/services/employees-fa
 export class TaskDialogComponent {
   private readonly fb = inject(FormBuilder);
   private readonly tasksFacade = inject(TasksFacadeService);
-  private readonly empApi = inject(EmployeesApiService);
   private readonly empFacade = inject(EmployeesFacadeService);
 
   visible = model<boolean>(false);
   task = input<Task | null>(null);
 
   /** Own local signal for employees */
-  employees = signal<Employee[]>([]);
+  employees = this.empFacade.employees;
   isSubmitting = this.tasksFacade.isSubmitting;
-  isLoadingDetail = signal<boolean>(false);
+  isLoadingDetail = this.tasksFacade.isDetailLoading;
 
   priorities = [
     { label: 'Low', value: 0 },
@@ -82,24 +81,10 @@ export class TaskDialogComponent {
 
       if (task) {
         // ── EDIT mode ─────────────────────────────────────────────────────
-        this.isLoadingDetail.set(true);
-        // We already have the task, just need to load employees before patchValue
-        this.empApi.getEmployees(1, 1000).subscribe({
-          next: (res) => {
-            this.employees.set(res.data);
-            this.taskForm.patchValue({
-              title: task.title,
-              description: task.description || '',
-              dueDate: task.dueDate ? new Date(task.dueDate) : null,
-              priority: this.getPriorityValue(task.priority),
-              status: this.getStatusValue(task.status),
-              assignedToEmployeeId: task.assignedToEmployeeId,
-            });
-            this.isLoadingDetail.set(false);
-          },
-        });
+        this.tasksFacade.loadTaskDetails(task.id);
       } else {
         // ── ADD mode ──────────────────────────────────────────────────────
+        this.tasksFacade.clearTaskDetails();
         this.taskForm.reset({
           title: '',
           description: '',
@@ -108,8 +93,21 @@ export class TaskDialogComponent {
           status: 0,
           assignedToEmployeeId: null
         });
-        this.isLoadingDetail.set(true);
-    
+      }
+    }, { allowSignalWrites: true });
+
+    // Watch for selected task detail changes
+    effect(() => {
+      const detail = this.tasksFacade.selectedTaskDetail();
+      if (detail) {
+        this.taskForm.patchValue({
+          title: detail.title,
+          description: detail.description || '',
+          dueDate: detail.dueDate ? new Date(detail.dueDate) : null,
+          priority: this.getPriorityValue(detail.priority),
+          status: this.getStatusValue(detail.status),
+          assignedToEmployeeId: detail.assignedToEmployeeId,
+        });
       }
     });
 

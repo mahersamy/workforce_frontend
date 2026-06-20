@@ -25,6 +25,9 @@ export class TasksFacadeService {
   readonly filters = this.taskState.filters;
   readonly isLoading = this.taskState.isLoading;
 
+  readonly selectedTaskDetail = this.taskState.selectedTaskDetail;
+  readonly isDetailLoading = this.taskState.isDetailLoading;
+
   // ── Operation state ────────────────────────────────────────────────────
   private readonly _isSubmitting = signal(false);
   private readonly _saveSucceeded = signal(0);
@@ -65,6 +68,23 @@ export class TasksFacadeService {
 
   setFilters(filters: TaskFilters): void {
     this.taskState.setFilters(filters);
+  }
+
+  loadTaskDetails(id: number): void {
+    this.taskState.setDetailLoading(true);
+    this.taskApi.getTaskById(id)
+      .pipe(
+        finalize(() => this.taskState.setDetailLoading(false)),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe({
+        next: (detail) => this.taskState.setSelectedTaskDetail(detail),
+        error: () => this.taskState.setSelectedTaskDetail(null)
+      });
+  }
+
+  clearTaskDetails(): void {
+    this.taskState.setSelectedTaskDetail(null);
   }
 
   // ── CRUD — facade owns the subscription ───────────────────────────────
