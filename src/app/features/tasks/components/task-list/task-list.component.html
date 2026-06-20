@@ -1,0 +1,26 @@
+<div class="page-header">
+  <div class="page-header-info">
+    <h2>Task Assignments</h2>
+    <p class="text-secondary">Track workflow resolutions, priorities, and assignments</p>
+  </div>
+  @if (isManager()) {
+    <button
+      pButton
+      label="Add Task"
+      icon="pi pi-plus"
+      class="p-button-primary"
+      (click)="openNewDialog()"
+    ></button>
+  }
+</div>
+
+<app-filter-panel
+  [fields]="filterConfig()"
+  (filtersChanged)="onFiltersChanged($event)"
+></app-filter-panel>
+
+<app-data-table />
+<app-paginator [config]="paginatorConfig()" (pageChange)="onPageChange($event)" />
+
+<!-- ── Create / Edit Task Dialog ─────────────────────────────────────── -->
+<app-task-dialog [(visible)]="isFormOpen" [task]="selectedTask()" />

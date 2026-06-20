@@ -1,0 +1,95 @@
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at 10% 20%, rgb(18, 28, 49) 0%, rgb(9, 14, 23) 90%);
+  padding: 1.5rem;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 2.5rem;
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  
+  .logo {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 64px;
+    height: 64px;
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    
+    i {
+      font-size: 2rem;
+      color: var(--primary-color);
+    }
+  }
+  
+  h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+    letter-spacing: -0.025em;
+  }
+  
+  p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+  }
+}
+
+.p-input-icon-left {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  
+  i {
+    position: absolute;
+    left: 0.75rem;
+    color: var(--text-secondary);
+  }
+  
+  input {
+    padding-left: 2.25rem !important;
+  }
+}
+
+.p-error {
+  color: var(--danger-color);
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+.form-actions-full {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.auth-footer {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  
+  a {
+    font-weight: 500;
+  }
+}
+
+// Override styles for p-select to style full width
+::ng-deep {
+  .p-select {
+    width: 100% !important;
+  }
+}

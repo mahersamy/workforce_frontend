@@ -1,0 +1,39 @@
+<div
+    class="empty-state-container animate-fade-in"
+    [class.is-error]="_dataTableConfig.tableConfig.isError()"
+>
+    <div class="glass-card">
+        <div class="icon-orb">
+            <div class="orb-inner">
+                @if (_dataTableConfig.tableConfig.isError()) {
+                <i class="pi pi-exclamation-triangle pulse-icon"></i>
+                } @else {
+                <i class="pi pi-box text-3xl"></i>
+                }
+            </div>
+        </div>
+
+        <div
+            class="content-text text-center d-flex justify-content-center align-items-center flex-column"
+        >
+            @if (_dataTableConfig.tableConfig.isError()) {
+            <h3 class="title error-gradient">
+                {{ 'Error system interruption' }}
+            </h3>
+            <p class="description">{{ 'Technical hitch' }}</p>
+            <button
+                class="btn-action btn-error"
+                (click)="refetch()"
+            >
+                <i class="pi pi-refresh"></i>
+                {{ 'Retry connection' }}
+            </button>
+            } @else if (_dataTableConfig.tableConfig.rows().length === 0) {
+            <h3 class="title">{{ 'No data' }}</h3>
+            <p class="description">
+                {{ 'No data found , please try again' }}
+            </p>
+            } 
+        </div>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+<p-confirmdialog />
+<div class="page-header">
+  <div class="page-header-info">
+    <h2>Departments</h2>
+    <p class="text-secondary">Manage organization structure and divisions</p>
+  </div>
+  @if (isAdmin()) {
+    <button
+      pButton
+      label="Add Department"
+      icon="pi pi-plus"
+      class="p-button-primary"
+      (click)="openNewDialog()"
+    ></button>
+  }
+</div>
+
+<app-filter-panel
+  [fields]="filterConfig()"
+  (filtersChanged)="onFiltersChanged($event)"
+></app-filter-panel>
+
+<app-data-table />
+<app-paginator [config]="paginatorConfig()" (pageChange)="onPageChange($event)" />
+
+<!-- ── Create / Edit Dialog ──────────────────────────────────────────── -->
+<app-department-dialog [(visible)]="isDialogOpen" [department]="selectedDepartment()" />

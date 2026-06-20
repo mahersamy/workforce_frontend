@@ -1,0 +1,75 @@
+// Design Tokens & Variables
+
+// Colors (HSL Palette)
+$primary-hsl: 220, 95%, 60%; // Vibrant blue
+$primary-hover-hsl: 220, 95%, 50%;
+$bg-dark-hsl: 224, 25%, 12%; // Sleek dark charcoal
+$card-dark-hsl: 224, 25%, 16%; // Modern card backing
+$border-dark-hsl: 224, 20%, 22%; // Soft border for cards
+$text-primary-hsl: 210, 20%, 98%;
+$text-secondary-hsl: 215, 15%, 75%;
+$success-hsl: 142, 70%, 45%; // Harmony emerald
+$warning-hsl: 38, 92%, 50%; // Alert amber
+$danger-hsl: 350, 80%, 55%; // Error rose
+$info-hsl: 196, 80%, 50%;
+
+// Theme Map
+:root {
+  --primary-color: hsl(#{$primary-hsl});
+  --primary-hover: hsl(#{$primary-hover-hsl});
+  --background-color: hsl(#{$bg-dark-hsl});
+  --card-background: hsl(#{$card-dark-hsl});
+  --border-color: hsl(#{$border-dark-hsl});
+  --text-primary: hsl(#{$text-primary-hsl});
+  --text-secondary: hsl(#{$text-secondary-hsl});
+  --success-color: hsl(#{$success-hsl});
+  --warning-color: hsl(#{$warning-hsl});
+  --danger-color: hsl(#{$danger-hsl});
+  --info-color: hsl(#{$info-hsl});
+
+  // gray
+  --gray-100: #d9d9d9;
+  --gray-400: #777979;
+  --gray-600: #333333;
+  --gray-700: #3d4142;
+  --gray-800: #292c2d;
+  --gray-900: #111315;
+
+  // Fonts
+  --font-sans:
+    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  // Shadows
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.15), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+
+  // Transitions
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s ease;
+}
+
+// Responsive Breakpoints
+$mobile: 576px;
+$tablet: 768px;
+$desktop: 992px;
+$widescreen: 1200px;
+
+@mixin mobile {
+  @media (max-width: #{$tablet - 1px}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: #{$tablet}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: #{$desktop}) {
+    @content;
+  }
+}

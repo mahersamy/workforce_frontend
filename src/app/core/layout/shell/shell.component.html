@@ -1,0 +1,93 @@
+<div class="shell-layout">
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar" [class.active]="isSidebarActive()">
+    <div class="sidebar-brand">
+      <i class="pi pi-users text-primary"></i>
+      <span>Workforce Management</span>
+      <button class="close-sidebar-btn" (click)="closeSidebar()">
+        <i class="pi pi-times"></i>
+      </button>
+    </div>
+
+    <div class="sidebar-user" *ngIf="currentUser()">
+      <div class="user-avatar">
+        {{ currentUser()?.username?.charAt(0)?.toUpperCase() }}
+      </div>
+      <div class="user-info">
+        <div class="username">{{ currentUser()?.username }}</div>
+        <div class="user-role badge" [ngClass]="{
+          'badge-success': currentUser()?.role === 'Admin',
+          'badge-info': currentUser()?.role === 'Manager',
+          'badge-warning': currentUser()?.role === 'Employee'
+        }">
+          {{ currentUser()?.role }}
+        </div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <ul>
+        <li>
+          <a routerLink="/dashboard" routerLinkActive="active" (click)="closeSidebar()">
+            <i class="pi pi-th-large"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li *appHasRole="['Admin', 'Manager']">
+          <a routerLink="/employees" routerLinkActive="active" (click)="closeSidebar()">
+            <i class="pi pi-id-card"></i>
+            <span>Employees</span>
+          </a>
+        </li>
+        <li *appHasRole="['Admin', 'Manager']">
+          <a routerLink="/departments" routerLinkActive="active" (click)="closeSidebar()">
+            <i class="pi pi-building"></i>
+            <span>Departments</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/tasks" routerLinkActive="active" (click)="closeSidebar()">
+            <i class="pi pi-check-square"></i>
+            <span>Tasks</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="logout-btn" (click)="logout()">
+        <i class="pi pi-sign-out"></i>
+        <span>Log Out</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Overlay for Mobile Sidebar -->
+  <div class="sidebar-overlay" *ngIf="isSidebarActive()" (click)="closeSidebar()"></div>
+
+  <!-- Content Container -->
+  <div class="main-container">
+    <!-- Header -->
+    <header class="header card-glass">
+      <button class="menu-toggle-btn" (click)="toggleSidebar()">
+        <i class="pi pi-bars"></i>
+      </button>
+
+      <div class="header-title">
+        <h1>Workforce Portal</h1>
+      </div>
+
+      <div class="header-user-profile" *ngIf="currentUser()">
+        <span class="user-greeting">Welcome, <strong>{{ currentUser()?.username }}</strong></span>
+        <button class="logout-icon-btn" (click)="logout()" title="Log Out">
+          <i class="pi pi-sign-out"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main View -->
+    <main class="content-view">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

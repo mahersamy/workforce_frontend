@@ -1,0 +1,128 @@
+<p-dialog
+  [header]="isEditMode() ? 'Edit Task Assignment' : 'Assign New Task'"
+  [(visible)]="visible"
+  [modal]="true"
+  [style]="{ width: '500px' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  @if (isLoadingDetail()) {
+    <div class="spinner-container flex justify-center p-4">
+      <p-progressSpinner ariaLabel="loading"></p-progressSpinner>
+    </div>
+  }
+
+  @if (!isLoadingDetail()) {
+    <form [formGroup]="taskForm" (ngSubmit)="onSave()" class="form-grid full-width-fields pt-2">
+      <div class="field-group">
+        <label for="task-title">Task Title</label>
+        <input
+          pInputText
+          id="task-title"
+          formControlName="title"
+          placeholder="Brief title of the task"
+          [class.ng-invalid]="taskForm.get('title')?.touched && taskForm.get('title')?.invalid"
+          [class.ng-dirty]="taskForm.get('title')?.touched"
+        />
+        <app-field-error [control]="taskForm.controls.title"></app-field-error>
+      </div>
+
+      <div class="field-group">
+        <label for="task-description">Description</label>
+        <textarea
+          pInputTextarea
+          id="task-description"
+          formControlName="description"
+          rows="3"
+          placeholder="Provide detail description and references..."
+          class="p-inputtext"
+        ></textarea>
+        <app-field-error [control]="taskForm.controls.description"></app-field-error>
+      </div>
+
+      <div class="field-group">
+        <label for="task-dueDate">Due Date</label>
+        <p-datepicker
+          id="task-dueDate"
+          formControlName="dueDate"
+          [showIcon]="true"
+          class="w-full"
+          dateFormat="yy-mm-dd"
+        ></p-datepicker>
+        <app-field-error [control]="taskForm.controls.dueDate"></app-field-error>
+      </div>
+
+      <div class="field-group">
+        <label for="task-priority">Priority</label>
+        <p-select
+          id="task-priority"
+          formControlName="priority"
+          [options]="priorities"
+          optionLabel="label"
+          optionValue="value"
+          class="w-full"
+          placeholder="Select priority"
+        ></p-select>
+        <app-field-error [control]="taskForm.controls.priority"></app-field-error>
+      </div>
+
+      @if (isEditMode()) {
+        <div class="field-group">
+          <label for="task-status">Status</label>
+          <p-select
+            id="task-status"
+            formControlName="status"
+            [options]="statuses"
+            optionLabel="label"
+            optionValue="value"
+            class="w-full"
+            placeholder="Select status"
+          ></p-select>
+          <app-field-error [control]="taskForm.controls.status"></app-field-error>
+        </div>
+      }
+
+      <div class="field-group">
+        <label for="task-assignee">Assign To Employee</label>
+        <p-select
+          id="task-assignee"
+          formControlName="assignedToEmployeeId"
+          [options]="employees()"
+          optionLabel="lastName"
+          optionValue="id"
+          class="w-full"
+          placeholder="Assign to active staff"
+        >
+          <ng-template pTemplate="selectedItem" let-opt>
+            @if (opt) {
+              {{ getEmployeeName(opt) }}
+            }
+          </ng-template>
+          <ng-template pTemplate="item" let-emp>
+            <span>{{ emp.firstName }} {{ emp.lastName }} ({{ emp.departmentName }})</span>
+          </ng-template>
+        </p-select>
+        <app-field-error [control]="taskForm.controls.assignedToEmployeeId"></app-field-error>
+      </div>
+
+      <div class="form-actions">
+        <button
+          pButton
+          type="button"
+          label="Cancel"
+          class="p-button-text p-button-secondary"
+          (click)="closeFormDialog()"
+        ></button>
+        <button
+          pButton
+          type="submit"
+          label="Save Assignment"
+          icon="pi pi-check"
+          [appLoading]="isSubmitting()"
+          [disabled]="taskForm.invalid"
+          class="p-button-primary"
+        ></button>
+      </div>
+    </form>
+  }
+</p-dialog>

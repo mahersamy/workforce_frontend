@@ -1,0 +1,55 @@
+<p-dialog
+  [header]="isEditMode() ? 'Edit Department' : 'Create Department'"
+  [(visible)]="visible"
+  [modal]="true"
+  [style]="{ width: '450px' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <form [formGroup]="deptForm" (ngSubmit)="onSave()" class="form-grid full-width-fields pt-2">
+    <div class="field-group">
+      <label for="dept-name">Department Name</label>
+      <input
+        pInputText
+        id="dept-name"
+        formControlName="name"
+        placeholder="e.g. Engineering, Sales, HR"
+        [class.ng-invalid]="deptForm.get('name')?.touched && deptForm.get('name')?.invalid"
+        [class.ng-dirty]="deptForm.get('name')?.touched"
+      />
+      <app-field-error [control]="deptForm.controls.name" />
+    </div>
+
+    <div class="field-group">
+      <label for="dept-description">Description</label>
+      <textarea
+        pInputTextarea
+        id="dept-description"
+        formControlName="description"
+        rows="4"
+        placeholder="Describe the department's core function..."
+        class="p-inputtext"
+      ></textarea>
+    </div>
+
+    <div class="form-actions">
+      <button
+        pButton
+        type="button"
+        label="Cancel"
+        class="p-button-text p-button-secondary"
+        (click)="closeDialog()"
+        [appLoading]="isLoading()"
+      ></button>
+      <button
+        pButton
+        type="submit"
+        label="Save"
+        icon="pi pi-check"
+        class="p-button-primary"
+        [appLoading]="isLoading()"
+        [disabled]="deptForm.invalid"
+      ></button>
+    </div>
+  </form>
+</p-dialog>

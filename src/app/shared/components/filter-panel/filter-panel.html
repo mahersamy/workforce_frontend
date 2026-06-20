@@ -1,0 +1,57 @@
+<form [formGroup]="form" class="filter-container">
+  <div class="filter-grid">
+    @for (field of fields(); track field.key) {
+      <div class="filter-field">
+        <label>{{ field.label }}</label>
+
+        @switch (field.type) {
+          @case ('text') {
+            <input
+              pInputText
+              [formControlName]="field.key"
+              [placeholder]="'Search ' + field.label"
+            />
+          }
+
+          @case ('select') {
+            <p-select
+              [options]="field.options"
+              optionLabel="label"
+              optionValue="value"
+              [formControlName]="field.key"
+              [placeholder]="'Select ' + field.label"
+              showClear
+            />
+          }
+
+          @case ('date') {
+            <p-datepicker
+              [formControlName]="field.key"
+              [placeholder]="field.label"
+              [showIcon]="true"
+            />
+          }
+        }
+      </div>
+    }
+  </div>
+
+  <div class="filter-actions">
+    <!-- <button
+      pButton
+      type="button"
+      label="Apply Filters"
+      icon="pi pi-check"
+      class="p-button-sm p-button-primary"
+      (click)="applyFilters()"
+    ></button> -->
+    <button
+      pButton
+      type="button"
+      label="Reset"
+      icon="pi pi-refresh"
+      class="p-button-sm p-button-secondary"
+      (click)="clearFilters()"
+    ></button>
+  </div>
+</form>

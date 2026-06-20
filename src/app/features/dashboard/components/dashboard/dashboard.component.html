@@ -1,0 +1,97 @@
+<div class="dashboard-wrapper">
+  <div class="dashboard-header mb-4">
+    <h2>System Overview</h2>
+    <p class="text-secondary">Workforce Portal key performance indicators</p>
+  </div>
+
+  @if (isLoading()) {
+    <div class="spinner-container">
+      <p-progressSpinner ariaLabel="loading"></p-progressSpinner>
+    </div>
+  } @else if (stats()) {
+    <!-- Metrics Grid -->
+    <div class="metrics-grid mb-4">
+      <app-dachboard-card [stats]="stats()?.totalEmployees"></app-dachboard-card>
+      <app-dachboard-card [stats]="stats()?.totalDepartments"></app-dachboard-card>
+      <app-dachboard-card [stats]="totalTasks()"></app-dachboard-card>
+    </div>
+
+    <!-- Charts & Breakdown -->
+    <div class="dashboard-content-grid">
+      <!-- Task Distribution Card -->
+      <div class="chart-card card-glass">
+        <div class="panel-header">
+          <h2>Task Distribution</h2>
+        </div>
+
+       <div class="chart-container">
+  <p-chart
+    type="doughnut"
+    [data]="taskChartData()"
+    [options]="taskChartOptions"
+  />
+</div>
+      </div>
+
+      <!-- Quick Task Progress Bars -->
+      <div class="progress-card card-glass">
+        <div class="panel-header">
+          <h2>Resolution Status</h2>
+        </div>
+        <div class="progress-list">
+          <div class="progress-group">
+            <div class="progress-info">
+              <span>Completed</span>
+              <span>{{ getTaskPercentage('Completed') }}%</span>
+            </div>
+            <div class="progress-bar-wrapper">
+              <div
+                class="progress-bar bg-success"
+                [style.width.%]="getTaskPercentage('Completed')"
+              ></div>
+            </div>
+          </div>
+
+          <div class="progress-group">
+            <div class="progress-info">
+              <span>In Progress</span>
+              <span>{{ getTaskPercentage('InProgress') }}%</span>
+            </div>
+            <div class="progress-bar-wrapper">
+              <div
+                class="progress-bar bg-info"
+                [style.width.%]="getTaskPercentage('InProgress')"
+              ></div>
+            </div>
+          </div>
+
+          <div class="progress-group">
+            <div class="progress-info">
+              <span>Pending Review</span>
+              <span>{{ getTaskPercentage('Pending') }}%</span>
+            </div>
+            <div class="progress-bar-wrapper">
+              <div
+                class="progress-bar bg-warning"
+                [style.width.%]="getTaskPercentage('Pending')"
+              ></div>
+            </div>
+          </div>
+
+          <div class="progress-group">
+            <div class="progress-info">
+              <span>Cancelled</span>
+              <span>{{ getTaskPercentage('Cancelled') }}%</span>
+            </div>
+            <div class="progress-bar-wrapper">
+              <div
+                class="progress-bar bg-danger"
+                [style.width.%]="getTaskPercentage('Cancelled')"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

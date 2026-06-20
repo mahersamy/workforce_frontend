@@ -1,0 +1,31 @@
+// PrimeNG Override & Custom Theme Variables
+
+:root {
+  // PrimeNG Token Mappings to custom variables
+  --p-primary-color: #3b82f6;
+  --p-primary-hover-color: #2563eb;
+  --p-primary-contrast-color: #ffffff;
+  
+  --p-content-background: var(--card-background);
+  --p-content-border-color: var(--border-color);
+  --p-content-text-color: var(--text-primary);
+  --p-content-text-secondary-color: var(--text-secondary);
+  
+  --p-navigation-background: var(--card-background);
+  --p-navigation-border-color: var(--border-color);
+  
+  --p-mask-background: rgba(15, 23, 42, 0.65);
+  
+  // Custom Glassmorphism variables
+  --glass-bg: rgba(22, 30, 49, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.05);
+  --glass-blur: blur(16px);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+// Dark Mode Class configuration
+.dark {
+  --background-color: hsl(224, 25%, 8%);
+  --card-background: hsl(224, 25%, 12%);
+  --border-color: hsl(224, 20%, 18%);
+}

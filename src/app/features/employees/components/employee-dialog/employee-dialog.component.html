@@ -1,0 +1,145 @@
+<p-dialog
+  [header]="isEditMode() ? 'Edit Employee Profile' : 'Add Employee Profile'"
+  [(visible)]="visible"
+  [modal]="true"
+  [style]="{ width: '550px' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  @if (isLoadingDetail()) {
+    <div class="spinner-container">
+      <p-progressSpinner ariaLabel="loading"></p-progressSpinner>
+    </div>
+  }
+
+  @if (!isLoadingDetail()) {
+    <form [formGroup]="employeeForm" (ngSubmit)="onSave()" class="form-grid pt-2">
+      <div class="field-group">
+        <label for="emp-firstName">First Name</label>
+        <input
+          pInputText
+          id="emp-firstName"
+          formControlName="firstName"
+          placeholder="First name"
+          [class.ng-invalid]="
+            employeeForm.get('firstName')?.touched && employeeForm.get('firstName')?.invalid
+          "
+          [class.ng-dirty]="employeeForm.get('firstName')?.touched"
+        />
+        <app-field-error [control]="employeeForm.controls.firstName"></app-field-error>
+      </div>
+
+      <div class="field-group">
+        <label for="emp-lastName">Last Name</label>
+        <input
+          pInputText
+          id="emp-lastName"
+          formControlName="lastName"
+          placeholder="Last name"
+          [class.ng-invalid]="
+            employeeForm.get('lastName')?.touched && employeeForm.get('lastName')?.invalid
+          "
+          [class.ng-dirty]="employeeForm.get('lastName')?.touched"
+        />
+        <app-field-error [control]="employeeForm.controls.lastName"></app-field-error>
+      </div>
+      <div class="field-group">
+        <label for="emp-departmentId">Department</label>
+        <p-select
+          id="emp-departmentId"
+          formControlName="departmentId"
+          [options]="departments()"
+          optionLabel="name"
+          optionValue="id"
+          dataKey="id"
+          class="w-full"
+          placeholder="Select department"
+          [class.ng-invalid]="
+            employeeForm.get('departmentId')?.touched && employeeForm.get('departmentId')?.invalid
+          "
+        >
+        </p-select>
+        <app-field-error [control]="employeeForm.controls.departmentId"></app-field-error>
+      </div>
+
+      <div class="field-group">
+        <label for="emp-email">Email Address</label>
+        <input
+          pInputText
+          type="email"
+          id="emp-email"
+          formControlName="email"
+          placeholder="email@company.com"
+          [class.ng-invalid]="
+            employeeForm.get('email')?.touched && employeeForm.get('email')?.invalid
+          "
+          [class.ng-dirty]="employeeForm.get('email')?.touched"
+          [attr.disabled]="isEditMode() ? true : null"
+        />
+        <app-field-error [control]="employeeForm.controls.email"></app-field-error>
+      </div>
+
+      <div class="field-group">
+        <label for="emp-phone">Phone Number</label>
+        <input
+          pInputText
+          id="emp-phone"
+          formControlName="phone"
+          placeholder="e.g. +1 (555) 019-2834"
+        />
+        <app-field-error [control]="employeeForm.controls.phone"></app-field-error>
+      </div>
+
+      @if (!isEditMode()) {
+        <div class="field-group">
+          <label for="emp-hireDate">Hire Date</label>
+          <p-datepicker
+            id="emp-hireDate"
+            formControlName="hireDate"
+            [showIcon]="true"
+            dateFormat="yy-mm-dd"
+          ></p-datepicker>
+          <app-field-error [control]="employeeForm.controls.hireDate"></app-field-error>
+        </div>
+      }
+
+      <div class="field-group">
+        <label for="emp-salary">Base Salary ($)</label>
+        <input
+          pInputText
+          type="number"
+          id="emp-salary"
+          formControlName="salary"
+          placeholder="Annual salary"
+          [min]="5000"
+          [class.ng-invalid]="
+            employeeForm.get('salary')?.touched && employeeForm.get('salary')?.invalid
+          "
+          [class.ng-dirty]="employeeForm.get('salary')?.touched"
+        />
+        @if (employeeForm.get('salary')?.touched && employeeForm.get('salary')?.invalid) {
+          <small class="p-error">Salary is required and must be positive.</small>
+        }
+      </div>
+
+      <div class="form-actions field-full">
+        <button
+          pButton
+          type="button"
+          label="Cancel"
+          class="p-button-text p-button-secondary"
+          (click)="closeFormDialog()"
+        ></button>
+        <button
+          pButton
+          type="submit"
+          label="Save Profile"
+          icon="pi pi-check"
+          [appLoading]="isSubmitting()"
+          [disabled]="employeeForm.invalid"
+          class="p-button-primary"
+        ></button>
+      </div>
+    </form>
+  }
+</p-dialog>

@@ -1,0 +1,197 @@
+.employees-wrapper {
+  animation: fadeIn var(--transition-normal);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1.5rem;
+  
+  .header-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    
+    h2 {
+      margin: 0;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+  }
+}
+
+.toolbar {
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  
+  .search-box {
+    flex: 1;
+    max-width: 400px;
+  }
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+.p-input-icon-left {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  
+  i {
+    position: absolute;
+    left: 0.75rem;
+    color: var(--text-secondary);
+  }
+  
+  input {
+    padding-left: 2.25rem !important;
+  }
+}
+
+.p-error {
+  color: var(--danger-color);
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+.paginator-container {
+  display: flex;
+  justify-content: center;
+}
+
+// Profile Details Dialog styling
+.detail-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  
+  .detail-avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 72px;
+    height: 72px;
+    background: var(--primary-color);
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow-md);
+  }
+  
+  h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 0.25rem 0;
+  }
+}
+
+.detail-grid {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  padding-bottom: 0.75rem;
+  
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  
+  .label {
+    display: flex;
+    align-items: center;
+    color: var(--text-secondary);
+    font-weight: 500;
+    
+    i {
+      font-size: 1rem;
+      width: 20px;
+    }
+  }
+  
+  .value {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+}
+
+::ng-deep {
+  .p-paginator {
+    background: transparent !important;
+    border: none !important;
+  }
+  
+  // Align date picker input styling
+  .p-datepicker {
+    width: 100% !important;
+    
+    .p-inputtext {
+      width: 100% !important;
+    }
+  }
+  
+  .p-select {
+    width: 100% !important;
+  }
+
+  .p-dialog {
+    background: var(--card-background) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 12px !important;
+    box-shadow: var(--shadow-glass) !important;
+    
+    .p-dialog-header {
+      background: transparent !important;
+      color: var(--text-primary) !important;
+      border-bottom: 1px solid var(--border-color) !important;
+      padding: 1.25rem !important;
+      
+      .p-dialog-title {
+        font-weight: 700 !important;
+        font-size: 1.25rem !important;
+      }
+      
+      .p-dialog-header-icons .p-dialog-header-icon {
+        color: var(--text-secondary) !important;
+        
+        &:hover {
+          color: var(--text-primary) !important;
+          background: rgba(255, 255, 255, 0.05) !important;
+        }
+      }
+    }
+    
+    .p-dialog-content {
+      background: transparent !important;
+      color: var(--text-primary) !important;
+      padding: 1.5rem !important;
+    }
+  }
+}

@@ -1,0 +1,133 @@
+.departments-wrapper {
+  animation: fadeIn var(--transition-normal);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1.5rem;
+  
+  .header-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    
+    h2 {
+      margin: 0;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+  }
+}
+
+.toolbar {
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  
+  .search-box {
+    flex: 1;
+    max-width: 400px;
+  }
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+.p-input-icon-left {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  
+  i {
+    position: absolute;
+    left: 0.75rem;
+    color: var(--text-secondary);
+  }
+  
+  input {
+    padding-left: 2.25rem !important;
+  }
+}
+
+.p-error {
+  color: var(--danger-color);
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+// Override textarea styling
+textarea {
+  resize: vertical;
+  background-color: var(--card-background) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 6px;
+  padding: 0.75rem !important;
+  font-family: var(--font-sans);
+  
+  &:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2) !important;
+  }
+}
+
+.paginator-container {
+  display: flex;
+  justify-content: center;
+}
+
+::ng-deep {
+  .p-paginator {
+    background: transparent !important;
+    border: none !important;
+  }
+  
+  .p-dialog {
+    background: var(--card-background) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 12px !important;
+    box-shadow: var(--shadow-glass) !important;
+    
+    .p-dialog-header {
+      background: transparent !important;
+      color: var(--text-primary) !important;
+      border-bottom: 1px solid var(--border-color) !important;
+      padding: 1.25rem !important;
+      
+      .p-dialog-title {
+        font-weight: 700 !important;
+        font-size: 1.25rem !important;
+      }
+      
+      .p-dialog-header-icons .p-dialog-header-icon {
+        color: var(--text-secondary) !important;
+        
+        &:hover {
+          color: var(--text-primary) !important;
+          background: rgba(255, 255, 255, 0.05) !important;
+        }
+      }
+    }
+    
+    .p-dialog-content {
+      background: transparent !important;
+      color: var(--text-primary) !important;
+      padding: 1.5rem !important;
+    }
+  }
+}

@@ -1,0 +1,137 @@
+:host ::ng-deep {
+  // Checkbox Styling overrides
+  --p-checkbox-background: transparent;
+  p-tableHeaderCheckbox,
+  p-tableCheckbox {
+    .p-checkbox {
+      width: 1.25rem !important;
+      height: 1.25rem !important;
+      .p-checkbox-box {
+        width: 1.25rem !important;
+        height: 1.25rem !important;
+      }
+    }
+  }
+
+  // Force PrimeNG V21 Tokens to match our dark theme
+  .p-datatable {
+    --p-datatable-header-background: var(--card-background);
+    --p-datatable-header-border-color: var(--border-color);
+    --p-datatable-header-color: var(--text-primary);
+    
+    --p-datatable-header-cell-background: var(--background-color);
+    --p-datatable-header-cell-color: var(--text-secondary);
+    --p-datatable-header-cell-border-color: var(--border-color);
+
+    --p-datatable-body-cell-background: var(--card-background);
+    --p-datatable-body-cell-color: var(--text-primary);
+    --p-datatable-body-cell-border-color: var(--border-color);
+
+    --p-datatable-row-background: var(--card-background);
+    --p-datatable-row-color: var(--text-primary);
+    --p-datatable-row-hover-background: rgba(255, 255, 255, 0.05);
+    --p-datatable-row-hover-color: var(--text-primary);
+
+    --p-paginator-background: var(--background-color);
+    
+    border: none !important;
+    border-radius: 20px !important;
+    overflow: hidden !important;
+    
+    // Fallback deep overrides just in case tokens are insufficient
+    background-color: var(--card-background) !important;
+
+    .p-datatable-header {
+      background-color: var(--card-background) !important;
+      color: var(--text-primary) !important;
+      border-bottom: 1px solid var(--border-color) !important;
+      padding: 1.5rem !important;
+    }
+
+    .p-datatable-thead > tr > th {
+      background-color: var(--background-color) !important;
+      color: var(--text-secondary) !important;
+      border-bottom: 1px solid var(--border-color) !important;
+      padding: 1rem 1.5rem !important;
+      font-weight: 600;
+    }
+
+    .p-datatable-tbody > tr {
+      background-color: var(--card-background) !important;
+      color: var(--text-primary) !important;
+      transition: background-color var(--transition-fast) !important;
+
+      &.row-even > td {
+        background-color: var(--background-color) !important;
+      }
+
+      &.row-odd > td {
+        background-color: var(--card-background) !important;
+      }
+
+      > td {
+        border-bottom: 1px solid var(--border-color) !important;
+        padding: 1rem 1.5rem !important;
+      }
+
+      &:hover > td {
+        background-color: rgba(255, 255, 255, 0.08) !important;
+      }
+    }
+
+    .p-paginator {
+      background-color: var(--background-color) !important;
+      border-top: 1px solid var(--border-color) !important;
+      padding: 1rem !important;
+
+      .p-paginator-first,
+      .p-paginator-prev,
+      .p-paginator-next,
+      .p-paginator-last,
+      .p-paginator-pages .p-paginator-page {
+        color: var(--text-secondary);
+        min-width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.1) !important;
+          color: var(--text-primary);
+        }
+
+        &.p-highlight {
+          background-color: var(--primary-color) !important;
+          color: white !important;
+        }
+      }
+    }
+  }
+}
+
+// Custom Action Button
+.action-btn {
+  background-color: transparent;
+  border: none;
+  position: relative;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all var(--transition-fast, 0.2s);
+
+  i {
+    font-size: 1rem;
+  }
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    transform: scale(1.05);
+  }
+}

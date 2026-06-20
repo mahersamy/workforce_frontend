@@ -1,0 +1,100 @@
+<div class="page-header">
+  <div class="page-header-info">
+    <h2>Employees</h2>
+    <p class="text-secondary">View and manage employee directory information</p>
+  </div>
+  @if (isManager()) {
+    <button
+      pButton
+      label="Add Employee"
+      icon="pi pi-plus"
+      class="p-button-primary"
+      (click)="openNewDialog()"
+    ></button>
+  }
+</div>
+<app-filter-panel
+  [fields]="filterConfig()"
+  (filtersChanged)="onFiltersChanged($event)"
+></app-filter-panel>
+
+<app-data-table />
+<app-paginator [config]="paginatorConfig()" (pageChange)="onPageChange($event)" />
+
+<!-- ── Create / Edit Form Dialog ─────────────────────────────────────── -->
+<app-employee-dialog [(visible)]="isFormOpen" [employee]="selectedEmployee()" />
+
+<!-- ── Employee Profile Detail Dialog ────────────────────────────────── -->
+<p-dialog
+  header="Employee Profile Details"
+  [(visible)]="isDetailOpen"
+  [modal]="true"
+  [style]="{ width: '500px' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  @if (isLoadingDetail()) {
+    <div class="spinner-container">
+      <p-progressSpinner ariaLabel="loading"></p-progressSpinner>
+    </div>
+  }
+
+  @if (!isLoadingDetail() && employeeDetail()) {
+    <div class="detail-container">
+      <div class="detail-header mb-4">
+        <div class="detail-avatar">
+          {{ employeeDetail()?.firstName?.charAt(0) }}{{ employeeDetail()?.lastName?.charAt(0) }}
+        </div>
+        <h3>{{ employeeDetail()?.firstName }} {{ employeeDetail()?.lastName }}</h3>
+        <p class="text-secondary">{{ employeeDetail()?.email }}</p>
+      </div>
+
+      <div class="detail-grid card-glass">
+        <div class="detail-row">
+          <span class="label"><i class="pi pi-id-card mr-2"></i>Employee ID</span>
+          <span class="value">#{{ employeeDetail()?.id }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label"><i class="pi pi-building mr-2"></i>Department</span>
+          <span class="value badge badge-info">{{ employeeDetail()?.departmentName }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label"><i class="pi pi-phone mr-2"></i>Phone</span>
+          <span class="value">{{ employeeDetail()?.phone || 'N/A' }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label"><i class="pi pi-calendar mr-2"></i>Hire Date</span>
+          <span class="value">{{ employeeDetail()?.hireDate | date: 'mediumDate' }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label"><i class="pi pi-money-bill mr-2"></i>Annual Salary</span>
+          <span class="value"
+            ><strong>{{ employeeDetail()?.salary | currency }}</strong></span
+          >
+        </div>
+        <div class="detail-row">
+          <span class="label"><i class="pi pi-info-circle mr-2"></i>Portal Status</span>
+          <span class="value">
+            <span
+              class="badge"
+              [class.badge-success]="employeeDetail()?.isActive"
+              [class.badge-danger]="!employeeDetail()?.isActive"
+            >
+              {{ employeeDetail()?.isActive ? 'Active' : 'Inactive' }}
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <div class="form-actions mt-4">
+        <button
+          pButton
+          type="button"
+          label="Close"
+          class="p-button-secondary"
+          (click)="closeDetailDialog()"
+        ></button>
+      </div>
+    </div>
+  }
+</p-dialog>
