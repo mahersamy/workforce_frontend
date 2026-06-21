@@ -7,7 +7,7 @@ import { Directive, ElementRef, Renderer2, effect, input } from '@angular/core';
 export class LoadingDirective {
   // Input signal to bind the loading state: [appLoading]="isLoading()"
   appLoading = input<boolean>(false);
-  
+
   private spinnerElement: HTMLElement | null = null;
 
   constructor(private el: ElementRef, private renderer: Renderer2) {
@@ -30,7 +30,9 @@ export class LoadingDirective {
     this.renderer.addClass(this.el.nativeElement, 'opacity-70');
 
     this.spinnerElement = this.renderer.createElement('i');
-    this.renderer.addClass(this.spinnerElement, 'pi pi-spinner');
+    this.renderer.addClass(this.spinnerElement, 'pi');
+    this.renderer.addClass(this.spinnerElement, 'pi-spinner');
+    this.renderer.addClass(this.spinnerElement, 'pi-spin');
     this.renderer.setStyle(this.spinnerElement, 'margin-left', '8px');
 
     // Append it to the host element

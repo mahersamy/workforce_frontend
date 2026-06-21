@@ -11,6 +11,7 @@ import { DatePipe, CurrencyPipe } from "@angular/common";
 import { UserCell } from "./components/user-cell/user-cell";
 import { SelectCell } from "./components/select-cell/select-cell";
 import { ActionConfig, BulkActionConfig } from "./models/actions.mode";
+import { StatusCell } from "./components/status-cell/status-cell";
 
 @Component({
     selector: "app-data-table",
@@ -24,6 +25,7 @@ import { ActionConfig, BulkActionConfig } from "./models/actions.mode";
         CurrencyPipe,
         UserCell,
         SelectCell,
+        StatusCell, 
     ],
     templateUrl: "./data-table.html",
     styleUrl: "./data-table.scss",

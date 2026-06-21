@@ -133,7 +133,14 @@
                   <app-select-cell
                     [value]="resolveFieldData(data, column.field)"
                     [row]="data"
-                    [config]="$any(column)"
+                    [config]="column"
+                  />
+                }
+                @case (_tableColumnType.STATUS) {
+                  <app-status-cell
+                    [value]="resolveFieldData(data, column.field)"
+                    [row]="data"
+                    [config]="column"
                   />
                 }
               }

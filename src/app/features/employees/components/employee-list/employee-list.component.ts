@@ -15,6 +15,7 @@ import { AppPaginator } from '../../../../shared/components/paginator/paginator'
 import { FilterPanel } from '../../../../shared/components/filter-panel/filter-panel';
 import { PageChangeEvent, PaginatorConfig } from '../../../../shared/components/paginator/models/pagination.model';
 import { EmployeeDialogComponent } from '../employee-dialog/employee-dialog.component';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-employee-list',
@@ -38,6 +39,8 @@ export class EmployeeListComponent implements OnInit {
   private readonly empFacade = inject(EmployeesFacadeService);
   private readonly deptFacade = inject(DepartmentsFacadeService);
   private readonly authFacade = inject(AuthFacadeService);
+  private readonly confirmationService = inject(ConfirmationService);
+  
 
   employees = this.empFacade.employees;
   totalCount = this.empFacade.totalCount;
@@ -199,6 +202,25 @@ export class EmployeeListComponent implements OnInit {
   // ── CRUD ──────────────────────────────────────────────────────────────
 
   onDelete(id: number): void {
-    this.empFacade.deleteEmployee(id);
+    this.confirmationService.confirm({
+      message: 'Do you want to delete this record?',
+      header: 'Danger Zone',
+      icon: 'pi pi-info-circle',
+      rejectLabel: 'Cancel',
+      rejectButtonProps: {
+        label: 'Cancel',
+        severity: 'secondary',
+        outlined: true
+      },
+      acceptButtonProps: {
+        label: 'Delete',
+        severity: 'danger'
+      },
+
+      accept: () => {
+        this.empFacade.deleteEmployee(id);
+      },
+    });
+
   }
 }

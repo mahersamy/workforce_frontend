@@ -13,6 +13,7 @@ import { FilterPanel } from '../../../../shared/components/filter-panel/filter-p
 import { Task } from '../../models/task.model';
 import { PageChangeEvent, PaginatorConfig } from '../../../../shared/components/paginator/models/pagination.model';
 import { TaskDialogComponent } from '../task-dialog/task-dialog.component';
+import { StatusBadgeOption } from '../../../../shared/components/data-table/models/colmun-config.model';
 
 @Component({
   selector: 'app-task-list',
@@ -62,13 +63,13 @@ export class TaskListComponent implements OnInit {
       key: 'priority',
       label: 'Priority',
       type: 'select',
-      options: this.priorities,
+      options: this.priorityBadgeOptions,
     },
     {
       key: 'status',
       label: 'Status',
       type: 'select',
-      options: this.statuses,
+      options: this.statusBadgeOptions,
     },
     {
       key: 'assignedToEmployeeId',
@@ -116,20 +117,7 @@ export class TaskListComponent implements OnInit {
     });
   });
 
-  // Option maps
-  priorities = [
-    { label: 'Low', value: 0 },
-    { label: 'Medium', value: 1 },
-    { label: 'High', value: 2 },
-    { label: 'Critical', value: 3 },
-  ];
 
-  statuses = [
-    { label: 'Pending', value: 0 },
-    { label: 'In Progress', value: 1 },
-    { label: 'Completed', value: 2 },
-    { label: 'Cancelled', value: 3 },
-  ];
 
   // Dialogs
   isFormOpen = signal<boolean>(false);
@@ -145,6 +133,20 @@ export class TaskListComponent implements OnInit {
     this.empFacade.setPageSize(100);
   }
 
+  priorityBadgeOptions: StatusBadgeOption[] = [
+  { label: 'Low', value: 0, severity: 'secondary' },
+  { label: 'Medium', value: 1, severity: 'info' },
+  { label: 'High', value: 2, severity: 'warning' },
+  { label: 'Critical', value: 3, severity: 'danger' },
+];
+
+statusBadgeOptions: StatusBadgeOption[] = [
+  { label: 'Pending', value: 0, severity: 'warning' },
+  { label: 'InProgress', value: 1, severity: 'info' },
+  { label: 'Completed', value: 2, severity: 'success' },
+  { label: 'Cancelled', value: 3, severity: 'danger' },
+];
+
   private initializeTable(): void {
     this.dataTableConfig.tableConfig.columns.set([
       { field: 'id', header: 'ID', sortable: true, type: TableColumnType.ID },
@@ -153,6 +155,21 @@ export class TaskListComponent implements OnInit {
       { field: 'priority', header: 'Priority', type: TableColumnType.TEXT },
       { field: 'status', header: 'Status', type: TableColumnType.TEXT },
       { field: 'assignedToEmployeeId', header: 'Assigned To', type: TableColumnType.TEXT },
+ {
+      field: 'priority',
+      header: 'Priority',
+      type: TableColumnType.STATUS,
+      options: this.priorityBadgeOptions,
+      editable: false,
+    },
+    {
+      field: 'status',
+      header: 'Status',
+      type: TableColumnType.STATUS,
+      options: this.statusBadgeOptions,
+      isEditable: (row: Task) => this.canUpdateStatus(row),
+      onChange: (value: number, row: Task) => this.onStatusChange(row, value),
+    },
     ]);
 
     this.dataTableConfig.tableConfig.actions.set([
@@ -256,8 +273,6 @@ export class TaskListComponent implements OnInit {
   }
 
   onDelete(id: number): void {
-    if (confirm('Are you sure you want to delete this task?')) {
-      this.tasksFacade.deleteTask(id);
-    }
+    this.tasksFacade.deleteTask(id);
   }
 }

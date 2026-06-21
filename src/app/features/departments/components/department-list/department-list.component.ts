@@ -35,7 +35,6 @@ export class DepartmentListComponent implements OnInit {
   private readonly dataTableConfig = inject(DataTableConfig);
   private readonly deptFacade = inject(DepartmentsFacadeService);
   private readonly authFacade = inject(AuthFacadeService);
-  private readonly confirmationService = inject(ConfirmationService);
 
   departments = this.deptFacade.departments;
   totalCount = this.deptFacade.totalCount;
@@ -178,25 +177,6 @@ export class DepartmentListComponent implements OnInit {
   // ── CRUD ──────────────────────────────────────────────────────────────
 
   onDelete(id: number): void {
-    this.confirmationService.confirm({
-      message: 'Do you want to delete this record?',
-      header: 'Danger Zone',
-      icon: 'pi pi-info-circle',
-      rejectLabel: 'Cancel',
-      rejectButtonProps: {
-        label: 'Cancel',
-        severity: 'secondary',
-        outlined: true
-      },
-      acceptButtonProps: {
-        label: 'Delete',
-        severity: 'danger'
-      },
-
-      accept: () => {
-        this.deptFacade.deleteDepartment(id);
-      },
-    });
-
+    this.deptFacade.deleteDepartment(id);
   }
 }

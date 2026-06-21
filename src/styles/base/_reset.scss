@@ -16,6 +16,10 @@ html, body {
   overflow-x: hidden;
 }
 
+p {
+  margin: 0;
+}
+
 a {
   color: var(--primary-color);
   text-decoration: none;
@@ -28,6 +32,7 @@ a {
 
 ul, ol {
   list-style: none;
+  padding: 0;
 }
 
 img {

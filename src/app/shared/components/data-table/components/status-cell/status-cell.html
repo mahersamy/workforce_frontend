@@ -1,0 +1,15 @@
+@if (canEdit()) {
+  <p-select    
+    [ngModel]="currentOption()?.value"
+    (ngModelChange)="onValueChange($event)"
+    [options]="config().options"
+    optionLabel="label"
+    optionValue="value"
+    appendTo="body"
+    [class]="'status-badge-select severity-' + (currentOption()?.severity || 'secondary')"
+  ></p-select>
+} @else {
+  <span class="status-badge" [class]="'severity-' + (currentOption()?.severity || 'secondary')">
+    {{ currentOption()?.label ?? value() ?? '-' }}
+  </span>
+}
